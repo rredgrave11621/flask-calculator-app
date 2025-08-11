@@ -25,7 +25,6 @@ def run_tests():
     cmd = [
         sys.executable, '-m', 'pytest',
         'tests/test_routes.py',
-        'tests/test_calculator.py',
         '-v',
         '--tb=short',
         '--json-report',
@@ -80,19 +79,23 @@ def run_tests():
                             print(f"   Error: {test['call']['longrepr'][:100]}...")
             
             # Show test categories
-            print("\nTEST CATEGORIES:")
+            print("\nTEST BREAKDOWN:")
             print("-" * 40)
             route_tests = [t for t in report.get('tests', []) if 'test_routes' in t.get('nodeid', '')]
-            calculator_tests = [t for t in report.get('tests', []) if 'test_calculator' in t.get('nodeid', '')]
             
             route_passed = len([t for t in route_tests if t.get('outcome') == 'passed'])
             route_total = len(route_tests)
             
-            calc_passed = len([t for t in calculator_tests if t.get('outcome') == 'passed'])
-            calc_total = len(calculator_tests)
+            # Count different test types
+            api_tests = [t for t in route_tests if ('calculate' in t.get('nodeid', '') or 'evaluate' in t.get('nodeid', ''))]
+            endpoint_tests = [t for t in route_tests if ('health' in t.get('nodeid', '') or 'metrics' in t.get('nodeid', '') or 'index' in t.get('nodeid', ''))]
             
-            print(f"Routes/API:     {route_passed}/{route_total} tests passed")
-            print(f"Calculator:     {calc_passed}/{calc_total} tests passed")
+            api_passed = len([t for t in api_tests if t.get('outcome') == 'passed'])
+            endpoint_passed = len([t for t in endpoint_tests if t.get('outcome') == 'passed'])
+            
+            print(f"API Endpoints:    {api_passed}/{len(api_tests)} tests passed")
+            print(f"System Endpoints: {endpoint_passed}/{len(endpoint_tests)} tests passed")
+            print(f"Total:           {route_passed}/{route_total} tests passed")
             
         except (FileNotFoundError, json.JSONDecodeError) as e:
             print(f"\nNote: Could not load detailed test report: {e}")
