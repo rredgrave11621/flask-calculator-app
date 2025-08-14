@@ -23,7 +23,7 @@ jobs:
         python-version: 3.11
 
     - name: Cache dependencies
-      uses: actions/cache@v4.2.0
+      uses: actions/cache@v3
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -35,14 +35,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
-    # - name: Run linting
-    #   run: |
-    #     flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
-    #     flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Run linting
+      run: |
+        flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     
-    # - name: Run black formatter check
-    #   run: |
-    #     black --check app/
+    - name: Run black formatter check
+      run: |
+        black --check app/
 
     - name: Scanning code with Sonarqube
       uses: SonarSource/sonarqube-scan-action@v4     
