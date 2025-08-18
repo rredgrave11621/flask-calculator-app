@@ -9,7 +9,6 @@ spec:
   - port: 3000
     protocol: TCP
     targetPort: 3000
-    nodePort: 30000
   selector:
     app: calculator-app
   type: NodePort
