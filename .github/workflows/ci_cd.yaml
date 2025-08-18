@@ -31,13 +31,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Scanning code with Sonarqube
-      uses: SonarSource/sonarqube-scan-action@master
-      if: always()
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
   security-scan:
     needs: Test
     runs-on: ubuntu-latest
