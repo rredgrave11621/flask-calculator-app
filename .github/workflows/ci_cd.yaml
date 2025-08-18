@@ -3,8 +3,19 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [main]
+    paths:
+      - 'app/**'
+      - '!app/.dockerignore'
+      - 'static/**'
+      - 'templates/**'
+      - './Dockerfile'
   pull_request:
     branches: [main]
+      - 'app/**'
+      - '!app/.dockerignore'
+      - 'static/**'
+      - 'templates/**'
+      - './Dockerfile'
   workflow_dispatch:
 
 env:

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calculator-app
+  namespace: calculator-app
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: calculator-app
+  template:
+    metadata:
+      labels:
+        app: calculator-app
+    spec:
+      containers:
+      - image: ghcr.io/rredgrave11621/flask-calculator-app:latest
+        name: calculator-app
+        ports:
+        - containerPort: 8000
+      imagePullSecrets:
+      - name: ghcr-login
