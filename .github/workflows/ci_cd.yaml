@@ -30,6 +30,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    
+    - name: Run linting
+      run: |
+        flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         
   Security:
     permissions:
@@ -62,6 +67,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      security-events: write
     
     steps:
     - uses: actions/checkout@v3
@@ -93,7 +99,6 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/amd64,linux/arm64
     
     - name: Run Trivy vulnerability scanner on Docker image
       uses: aquasecurity/trivy-action@master
@@ -101,7 +106,7 @@ jobs:
         image-ref: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         format: 'sarif'
         output: 'docker-trivy-results.sarif'
-    
+  
     - name: Upload Docker Trivy scan results
       uses: github/codeql-action/upload-sarif@v3
       if: always()
