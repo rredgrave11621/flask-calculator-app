@@ -3,6 +3,8 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [main]
+    tags:
+      - "v*.*.*"
     paths:
       - 'app/**'
       - '!app/.dockerignore'
@@ -11,6 +13,8 @@ on:
       - './Dockerfile'
   pull_request:
     branches: [main]
+    tags:
+      - "v*.*.*"
     paths:
       - 'app/**'
       - '!app/.dockerignore'
