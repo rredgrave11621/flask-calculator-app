@@ -11,6 +11,7 @@ on:
       - './Dockerfile'
   pull_request:
     branches: [main]
+    paths:
       - 'app/**'
       - '!app/.dockerignore'
       - 'static/**'
