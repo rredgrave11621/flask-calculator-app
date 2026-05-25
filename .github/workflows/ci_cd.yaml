@@ -35,13 +35,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # - name: Set up Python 3.13
-    #   id: step1
-    #   uses: actions/setup-python@v5
-    #   with:
-    #     python-version: 3.13
-    #     cache: 'pip'
-
     - name: Install python dependencies
       id: step2
       run: |
@@ -78,7 +71,9 @@ jobs:
         sarif_file: 'trivy-results.sarif'
   
   Build:
-    needs: [Test, Security]
+    needs: 
+      - Test
+      - Security
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
     
